@@ -1,0 +1,297 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "POSTAWAY API",
+    "description": "API documentation for Postaway application",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000",
+      "description": "Local server"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "JWTAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "Paste JWT token directly (no Bearer)"
+      }
+    }
+  },
+  "security": [
+    { "JWTAuth": [] }
+  ],
+  "paths": {
+
+    "/api/POST/signup": {
+      "post": {
+        "tags": ["User"],
+        "summary": "Register a new user",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["name", "email", "password"],
+                "properties": {
+                  "name": { "type": "string" },
+                  "email": { "type": "string" },
+                  "password": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": { "201": { "description": "User registered" } }
+      }
+    },
+
+    "/api/POST/signin": {
+      "post": {
+        "tags": ["User"],
+        "summary": "Login user",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["email", "password"],
+                "properties": {
+                  "email": { "type": "string" },
+                  "password": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": { "200": { "description": "JWT returned" } }
+      }
+    },
+
+    "/api/posts/GET/filter": {
+      "get": {
+        "tags": ["Post"],
+        "summary": "Fetch filtered posts",
+        "responses": { "200": { "description": "Filtered posts fetched" } }
+      }
+    },
+
+    "/api/posts/GET/sorted": {
+      "get": {
+        "tags": ["Post"],
+        "summary": "Fetch sorted posts",
+        "responses": { "200": { "description": "Sorted posts fetched" } }
+      }
+    },
+
+    "/api/posts/GET/drafts": {
+      "get": {
+        "tags": ["Post"],
+        "summary": "Fetch user drafts",
+        "responses": { "200": { "description": "Draft posts fetched" } }
+      }
+    },
+
+    "/api/posts/GET/archived": {
+      "get": {
+        "tags": ["Post"],
+        "summary": "Fetch archived posts",
+        "responses": { "200": { "description": "Archived posts fetched" } }
+      }
+    },
+
+    "/api/posts/GET/all": {
+      "get": {
+        "tags": ["Post"],
+        "summary": "Fetch all posts",
+        "responses": { "200": { "description": "All posts fetched" } }
+      }
+    },
+
+    "/api/posts/GET": {
+      "get": {
+        "tags": ["Post"],
+        "summary": "Fetch logged-in user's posts",
+        "responses": { "200": { "description": "User posts fetched" } }
+      }
+    },
+
+    "/api/posts/GET/{id}": {
+      "get": {
+        "tags": ["Post"],
+        "summary": "Fetch post by ID",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": { "200": { "description": "Post fetched" } }
+      }
+    },
+
+    "/api/posts/POST": {
+      "post": {
+        "tags": ["Post"],
+        "summary": "Create post",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "caption": { "type": "string" },
+                  "imageUrl": { "type": "string", "format": "binary" }
+                }
+              }
+            }
+          }
+        },
+        "responses": { "201": { "description": "Post created" } }
+      }
+    },
+
+    "/api/posts/PUT/{id}": {
+      "put": {
+        "tags": ["Post"],
+        "summary": "Update post",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": { "200": { "description": "Post updated" } }
+      }
+    },
+
+    "/api/posts/DELETE/{id}": {
+      "delete": {
+        "tags": ["Post"],
+        "summary": "Delete post",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": { "200": { "description": "Post deleted" } }
+      }
+    },
+
+    "/api/posts/PATCH/{id}/publish": {
+      "patch": {
+        "tags": ["Post"],
+        "summary": "Publish draft post",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": { "200": { "description": "Post published" } }
+      }
+    },
+
+    "/api/posts/PATCH/{id}/archive": {
+      "patch": {
+        "tags": ["Post"],
+        "summary": "Archive post",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": { "200": { "description": "Post archived" } }
+      }
+    },
+
+    "/api/comments/GET/{id}": {
+      "get": {
+        "tags": ["Comment"],
+        "summary": "Fetch comments of post",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": { "200": { "description": "Comments fetched" } }
+      }
+    },
+
+    "/api/comments/POST/{id}": {
+      "post": {
+        "tags": ["Comment"],
+        "summary": "Add comment",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["content"],
+                "properties": { "content": { "type": "string" } }
+              }
+            }
+          }
+        },
+        "responses": { "201": { "description": "Comment added" } }
+      }
+    },
+
+    "/api/comments/PUT/{id}": {
+      "put": {
+        "tags": ["Comment"],
+        "summary": "Update comment",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": { "200": { "description": "Comment updated" } }
+      }
+    },
+
+    "/api/comments/DELETE/{id}": {
+      "delete": {
+        "tags": ["Comment"],
+        "summary": "Delete comment",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": { "200": { "description": "Comment deleted" } }
+      }
+    },
+
+    "/api/likes/GET/toggle/{postId}": {
+      "get": {
+        "tags": ["Like"],
+        "summary": "Toggle like",
+        "parameters": [
+          { "name": "postId", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": { "200": { "description": "Like toggled" } }
+      }
+    },
+
+    "/api/likes/GET/{postId}": {
+      "get": {
+        "tags": ["Like"],
+        "summary": "Fetch likes of post",
+        "parameters": [
+          { "name": "postId", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": { "200": { "description": "Likes fetched" } }
+      }
+    },
+
+    "/api/bookmark/POST/{id}": {
+      "post": {
+        "tags": ["Bookmark"],
+        "summary": "Toggle bookmark",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }
+        ],
+        "responses": { "200": { "description": "Bookmark toggled" } }
+      }
+    },
+
+    "/api/bookmark/GET": {
+      "get": {
+        "tags": ["Bookmark"],
+        "summary": "Fetch my bookmarks",
+        "responses": { "200": { "description": "Bookmarks fetched" } }
+      }
+    }
+  }
+}
